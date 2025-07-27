@@ -1,164 +1,148 @@
-# Simple Flask Chatbot
+# Dual Application Workspace
 
-A simple web-based chatbot built with Flask and vanilla JavaScript. This chatbot provides friendly responses to user messages and features a clean, modern interface.
+## Overview
 
-## Features
+This workspace contains two separate web applications:
 
-- 🤖 **Interactive Chat Interface**: Clean, modern chat UI with smooth animations
-- 💬 **Smart Responses**: Contextual responses based on user input
-- 📱 **Mobile-Friendly**: Responsive design that works on all devices
-- ⚡ **Real-time Chat**: Instant message exchange with typing indicators
-- 🎨 **Beautiful Design**: Gradient backgrounds and polished UI elements
+### 1. PawMeet - Meeting Scheduler Application
+PawMeet is a full-stack web application for scheduling and managing meetings with timezone support. It features a mobile-first design with a React frontend, Express.js backend, and PostgreSQL database using Drizzle ORM. The application is designed as a pet-themed meeting scheduler with modern UI components and real-time meeting management capabilities.
 
-## What the Bot Can Do
+### 2. Simple Flask Chatbot
+A clean, web-based chatbot built with Flask and vanilla JavaScript. Features a modern chat interface with contextual responses, typing indicators, and mobile-responsive design. The chatbot handles greetings, help requests, weather queries, and general conversation.
 
-The chatbot recognizes several types of input and responds accordingly:
+## User Preferences
 
-- **Greetings**: Says hello, hi, hey
-- **Goodbyes**: Responds to bye, goodbye, farewell
-- **Help Requests**: Provides assistance when asked
-- **Weather Questions**: Gives playful responses about weather
-- **Time Questions**: Responds to time-related queries
-- **General Chat**: Engaging responses to keep the conversation going
+Preferred communication style: Simple, everyday language.
 
-## Installation
+## System Architecture
 
-1. **Clone or download the project files**
+### Frontend Architecture
+- **Framework**: React 18 with TypeScript
+- **Build Tool**: Vite for fast development and optimized builds
+- **UI Framework**: Tailwind CSS with shadcn/ui component library
+- **State Management**: TanStack Query (React Query) for server state management
+- **Routing**: Wouter for lightweight client-side routing
+- **Forms**: React Hook Form with Zod validation
+- **Mobile-First Design**: Responsive layout optimized for mobile devices
 
-2. **Install Python dependencies**:
-   ```bash
-   pip install flask flask-cors
-   ```
+### Backend Architecture
+- **Runtime**: Node.js with Express.js framework
+- **Language**: TypeScript with ES modules
+- **API Style**: RESTful API endpoints
+- **Development**: Hot reload with tsx for development server
+- **Production**: Compiled with esbuild for optimal performance
 
-3. **Run the application**:
-   ```bash
-   python run.py
-   ```
+### Database Architecture
+- **Database**: PostgreSQL with Neon serverless hosting
+- **ORM**: Drizzle ORM for type-safe database operations
+- **Schema Management**: Drizzle Kit for migrations and schema management
+- **Connection**: @neondatabase/serverless for edge-compatible connections
 
-4. **Open your browser** and go to: `http://localhost:8080`
+## Key Components
 
-## File Structure
+### Database Schema
+- **Users Table**: Stores user information including timezone preferences
+- **Meetings Table**: Stores meeting details with timezone-aware timestamps
+- **Shared Types**: Common TypeScript types and Zod schemas for validation
 
-```
-├── app.py                 # Main Flask application with chatbot logic
-├── run.py                 # Application runner script
-├── templates/
-│   └── index.html         # Frontend HTML with embedded CSS and JavaScript
-└── README.md              # This file
-```
+### API Endpoints
+- `GET /api/user` - Retrieve current user information
+- `PATCH /api/user/timezone` - Update user timezone preference
+- `GET /api/meetings/upcoming` - Get upcoming meetings for user
+- `POST /api/meetings` - Create new meeting
+- `PUT/DELETE /api/meetings/:id` - Update/delete existing meetings
 
-## API Endpoints
+### UI Components
+- **Mobile Layout**: Responsive container with bottom navigation
+- **Meeting Cards**: Display meeting information with timezone conversion
+- **Timezone Selector**: Multi-timezone support with current time display
+- **Create Meeting Modal**: Form for scheduling new meetings
+- **Calendar View**: Weekly calendar interface for meeting visualization
 
-### `GET /`
-Returns the main chat interface (HTML page).
+### Storage Layer
+- **Interface**: IStorage interface for data operations abstraction
+- **Implementation**: PostgreSQL database with Drizzle ORM
+- **Operations**: CRUD operations for users and meetings with persistent storage
+- **Database**: Neon PostgreSQL with connection pooling and serverless compatibility
 
-### `POST /chat`
-Processes chat messages and returns bot responses.
+## Data Flow
 
-**Request Body:**
-```json
-{
-  "message": "Hello!"
-}
-```
+1. **User Authentication**: Simplified with default user stored in PostgreSQL database
+2. **Meeting Creation**: Form validation → API call → PostgreSQL storage → UI update
+3. **Timezone Handling**: Client-side conversion using date-fns-tz library
+4. **Real-time Updates**: React Query for automatic data synchronization
+5. **Mobile Navigation**: Bottom tab navigation with floating action button
+6. **Database Persistence**: All user data and meetings persist across application restarts
 
-**Response:**
-```json
-{
-  "user_message": "Hello!",
-  "bot_response": "Hi there! What can I do for you?"
-}
-```
+## External Dependencies
 
-## Customization
+### Core Dependencies
+- **@neondatabase/serverless**: PostgreSQL connection for serverless environments
+- **drizzle-orm**: Type-safe database ORM
+- **@tanstack/react-query**: Server state management
+- **@radix-ui/***: Accessible UI primitives
+- **date-fns**: Date manipulation and timezone handling
+- **zod**: Runtime type validation
 
-### Adding New Response Types
+### Development Tools
+- **Vite**: Fast build tool with HMR
+- **TypeScript**: Static type checking
+- **Tailwind CSS**: Utility-first styling
+- **ESLint/Prettier**: Code formatting and linting
 
-Edit the `RESPONSES` dictionary in `app.py` to add new categories:
+### UI Component Library
+- **shadcn/ui**: Modern, accessible component library built on Radix UI
+- **Lucide React**: Icon library
+- **class-variance-authority**: Component variant management
 
-```python
-RESPONSES = {
-    'new_category': [
-        "Response 1",
-        "Response 2",
-        "Response 3"
-    ]
-}
-```
+## Deployment Strategy
 
-Then add detection logic in the `get_bot_response()` function:
+### Development Environment
+- **Hot Reload**: Vite dev server with Express.js backend
+- **Database**: Neon PostgreSQL with connection pooling
+- **Environment Variables**: DATABASE_URL for database connection
 
-```python
-if any(word in message for word in ['keyword1', 'keyword2']):
-    return random.choice(RESPONSES['new_category'])
-```
+### Production Build
+- **Frontend**: Vite build to static assets in dist/public
+- **Backend**: ESBuild compilation to dist/index.js
+- **Serving**: Express serves both API and static files
 
-### Styling Changes
+### Replit Integration
+- **Cartographer Plugin**: Development-only plugin for Replit integration
+- **Runtime Error Modal**: Development error handling
+- **Replit Banner**: Development mode indicator
 
-The CSS is embedded in `templates/index.html`. You can modify:
-- Colors in the gradient backgrounds
-- Font sizes and families
-- Animation timing and effects
-- Layout spacing and sizing
+## Application Access
 
-### Advanced Features
+- **PawMeet (React/Express)**: http://localhost:5000
+- **Flask Chatbot**: http://localhost:8080
 
-To extend the chatbot, consider adding:
-- **Database Integration**: Store conversation history
-- **AI/ML Integration**: Connect to OpenAI, Hugging Face, or other AI APIs
-- **User Authentication**: Add login/signup functionality
-- **File Uploads**: Allow users to share images or documents
-- **Voice Chat**: Add speech-to-text and text-to-speech
+## Flask Chatbot Architecture
 
-## Example Conversations
+### Technology Stack
+- **Backend**: Flask (Python) with CORS support
+- **Frontend**: Vanilla HTML, CSS, JavaScript
+- **Design**: Mobile-responsive with gradient UI
+- **Features**: Real-time chat, typing indicators, contextual responses
 
-```
-User: Hello!
-Bot: Hello! How can I help you today?
+### File Structure
+- `app.py`: Main Flask application with chatbot logic
+- `run.py`: Application runner script  
+- `templates/index.html`: Complete frontend with embedded CSS/JS
+- `README.md`: Comprehensive documentation
 
-User: What's the weather like?
-Bot: I don't have access to real weather data, but I hope it's nice where you are!
+### Response Categories
+- Greetings and goodbyes
+- Help and support requests
+- Weather and time queries
+- General conversation responses
 
-User: Can you help me?
-Bot: I can help you with basic questions. Try asking me about the weather, time, or just chat!
+### Key Architectural Decisions
 
-User: Goodbye!
-Bot: Goodbye! Have a great day!
-```
-
-## Development
-
-### Running in Debug Mode
-
-The application runs in debug mode by default, which means:
-- Automatic reloading when code changes
-- Detailed error messages
-- Debug console available
-
-### Port Configuration
-
-To change the port, modify the `port` parameter in both `app.py` and `run.py`:
-
-```python
-app.run(host='0.0.0.0', port=YOUR_PORT, debug=True)
-```
-
-## Technical Details
-
-- **Backend**: Flask (Python web framework)
-- **Frontend**: Vanilla HTML, CSS, and JavaScript
-- **CORS**: Enabled for cross-origin requests
-- **Responsive Design**: Mobile-first approach with CSS media queries
-- **Error Handling**: Graceful error handling for API requests
-
-## License
-
-This project is open source and available under the MIT License.
-
-## Contributing
-
-Feel free to fork this project and submit pull requests for any improvements:
-- Add new response categories
-- Improve the UI/UX design
-- Add new features
-- Fix bugs or improve performance
+1. **Mobile-First Design**: Addresses primary use case of on-the-go meeting scheduling
+2. **Timezone-Aware**: Core feature for global meeting coordination
+3. **Type Safety**: TypeScript + Zod + Drizzle for end-to-end type safety
+4. **Component Reusability**: shadcn/ui for consistent, accessible components
+5. **Serverless Ready**: Neon PostgreSQL and stateless backend for scalability
+6. **Development Experience**: Fast build times with Vite and hot reload
+7. **Dual Application Support**: Flask chatbot runs independently on port 8080
